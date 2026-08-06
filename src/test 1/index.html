@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA | Premium Deodorant</title>
+    <style>
+        /* --- CSS STYLING --- */
+        :root {
+            --primary: #00ffcc;
+            --bg: #0a0a0a;
+            --text: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+            /* Extra tall to allow for a lot of scrolling */
+            height: 300vh; 
+        }
+
+        /* The 3D Canvas stays fixed in the background */
+        #webgl-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+
+        /* E-commerce Sections */
+        section {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+            z-index: 1;
+            pointer-events: none; /* Lets you click through to the canvas if needed */
+        }
+
+        h1, h2 {
+            font-size: 5rem;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        p {
+            font-size: 1.5rem;
+            max-width: 400px;
+            color: #aaaaaa;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .btn {
+            pointer-events: auto; /* Makes button clickable */
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: var(--primary);
+            color: var(--bg);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: fit-content;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 255, 204, 0.3);
+        }
+
+        /* Specific section layouts */
+        #hero {
+            align-items: center;
+            text-align: center;
+        }
+
+        #hero h1 {
+            background: linear-gradient(90deg, #ffffff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #features {
+            align-items: flex-end; /* Text on the right */
+            text-align: right;
+        }
+
+        #buy {
+            align-items: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed 3D Background -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Scrollable HTML Content -->
+    <main>
+        <section id="hero">
+            <h1>AURA<br>Motion</h1>
+            <p>The next generation of active freshness. Scroll to explore the engineering behind the scent.</p>
+        </section>
+
+        <section id="features">
+            <h2>48 Hour<br>Shield</h2>
+            <p>Our patented micro-capsule technology releases bursts of freshness specifically when you move. Stay cool under pressure.</p>
+        </section>
+
+        <section id="buy">
+            <h2>Elevate Your<br>Routine</h2>
+            <p>Experience the premium standard of personal care today.</p>
+            <a href="#" class="btn">Pre-Order Now - $24</a>
+        </section>
+    </main>
+
+    <!-- Import Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        // --- 1. SETUP SCENE, CAMERA, RENDERER ---
+        const canvas = document.querySelector('#webgl-canvas');
+        const scene = new THREE.Scene();
+        
+        // Add a subtle fog to make the background fade nicely
+        scene.fog = new THREE.Fog(0x0a0a0a, 5, 15);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 10;
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // --- 2. BUILD THE 3D DEODORANT CAN ---
+        const productGroup = new THREE.Group();
+
+        // 2A. The Can Body (Matte Black/Grey)
+        const bodyGeo = new THREE.CylinderGeometry(1.2, 1.2, 4.5, 64);
+        const bodyMat = new THREE.MeshStandardMaterial({ 
+            color: 0x1a1a1a, 
+            roughness: 0.7, 
+            metalness: 0.3 
+        });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+
+        // 2B. The Cap (Shiny Metallic Cyan)
+        const capGeo = new THREE.CylinderGeometry(1.22, 1.22, 1.5, 64);
+        const capMat = new THREE.MeshStandardMaterial({ 
+            color: 0x00ffcc, 
+            roughness: 0.1, 
+            metalness: 0.9 
+        });
+        const cap = new THREE.Mesh(capGeo, capMat);
+        cap.position.y = 3; // Move cap to the top of the body
+
+        // 2C. Add details (a subtle ring separating body and cap)
+        const ringGeo = new THREE.TorusGeometry(1.22, 0.05, 16, 64);
+        const ringMat = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 1, roughness: 0 });
+        const ring = new THREE.Mesh(ringGeo, ringMat);
+        ring.position.y = 2.25;
+        ring.rotation.x = Math.PI / 2;
+
+        // Combine them into a single group
+        productGroup.add(body, cap, ring);
+        
+        // Tilt it slightly initially for a dynamic look
+        productGroup.rotation.x = 0.2; 
+        productGroup.rotation.z = -0.1;
+        scene.add(productGroup);
+
+        // --- 3. LIGHTING ---
+        // Crucial for making 3D look realistic
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        mainLight.position.set(5, 5, 5);
+        scene.add(mainLight);
+
+        const accentLight = new THREE.PointLight(0x00ffcc, 2, 10); // Cyan accent light
+        accentLight.position.set(-5, 0, 5);
+        scene.add(accentLight);
+
+        // --- 4. SCROLL ANIMATION LOGIC ---
+        // Variables for smooth scrolling (Linear Interpolation)
+        let scrollY = 0;
+        let currentScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+        });
+
+        // --- 5. ANIMATION LOOP ---
+        const clock = new THREE.Clock();
+
+        function animate() {
+            // Smoothly ease the current scroll value towards the actual scroll value
+            currentScroll += (scrollY - currentScroll) * 0.05;
+            
+            // Calculate scroll progress from 0 to 1
+            const maxScroll = document.body.scrollHeight - window.innerHeight;
+            let scrollProgress = currentScroll / maxScroll;
+
+            // Continual slow rotation on the Y axis for idle movement
+            productGroup.rotation.y = clock.getElapsedTime() * 0.2;
+
+            // --- ANIMATION TIMELINE BASED ON SCROLL PROGRESS ---
+            
+            // Section 1 (Hero) to Section 2 (Features)
+            if (scrollProgress < 0.5) {
+                // Normalize progress for this section (0 to 1)
+                let p = scrollProgress * 2; 
+                
+                // Move product to the left
+                productGroup.position.x = -3 * p; 
+                // Tilt it forward
+                productGroup.rotation.x = 0.2 + (0.5 * p); 
+                // Move it slightly closer to camera
+                productGroup.position.z = 2 * p; 
+            } 
+            // Section 2 (Features) to Section 3 (Buy)
+            else {
+                // Normalize progress for this section (0 to 1)
+                let p = (scrollProgress - 0.5) * 2; 
+                
+                // Move product back to center
+                productGroup.position.x = -3 + (3 * p); 
+                // Stand it straight up
+                productGroup.rotation.x = 0.7 - (0.7 * p); 
+                // Bring it even closer for the final shot
+                productGroup.position.z = 2 + (2 * p); 
+            }
+
+            // Render scene
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // --- 6. HANDLE WINDOW RESIZE ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

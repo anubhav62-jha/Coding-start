@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title >TastyBites — Recipes Worth Pinning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&family=Lora:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== Navbar ===== -->
+<nav class="navbar">
+  <a href="index.html" class="logo">Tasty<span>Bites</span></a>
+
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#categories">Categories</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <button id="search-toggle" aria-label="Toggle search">🔍</button>
+    <input type="text" id="search-input" placeholder="Search recipes…">
+    <button id="menu-toggle" aria-label="Toggle menu">☰</button>
+  </div>
+</nav>
+
+<!-- ===== Hero: featured recipe ===== -->
+<header class="hero" id="home">
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="eyebrow">Today's Pick</span>
+      <h1>Recipes worth<br>pinning to the fridge.</h1>
+      <p>Real ingredients, honest steps, no life-story before the recipe. Just food worth making again.</p>
+      <a href="recipe.html?id=1" class="btn btn-primary">View Recipe</a>
+    </div>
+
+    <div class="hero-card index-card">
+      <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80" alt="Roasted garlic and rosemary focaccia">
+      <h3>Roasted Garlic &amp; Rosemary Focaccia</h3>
+      <div class="badges">
+        <span class="badge">⏱ 2h 15m</span>
+        <span class="badge">🍽 8 servings</span>
+        <span class="badge">◆ Medium</span>
+      </div>
+      <p class="desc" style="margin-top:8px;">Pillowy, olive-oil-soaked bread studded with roasted garlic — better than the bakery version.</p>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Category filter ===== -->
+<section class="categories" id="categories">
+  <div class="wrap">
+    <button class="pill active" data-category="all">All</button>
+    <button class="pill" data-category="breakfast">Breakfast</button>
+    <button class="pill" data-category="lunch">Lunch</button>
+    <button class="pill" data-category="dinner">Dinner</button>
+    <button class="pill" data-category="dessert">Dessert</button>
+    <button class="pill" data-category="vegan">Vegan</button>
+  </div>
+</section>
+
+<!-- ===== Recipe grid ===== -->
+<section class="recipe-grid-section">
+  <div class="wrap">
+    <h2 class="section-title">Fresh from the kitchen</h2>
+
+    <div class="recipe-grid" id="recipe-grid">
+
+      <article class="recipe-card index-card" data-category="breakfast" data-recipe-id="2">
+        <div class="card-top-row">
+          <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=500&q=80" alt="Fluffy pancakes with berries">
+        </div>
+        <button class="fav-btn" id="fav-btn-2" aria-label="Save recipe">♡</button>
+        <h4>Brown Butter Blueberry Pancakes</h4>
+        <div class="badges">
+          <span class="badge">⏱ 25m</span>
+          <span class="badge">◆ Easy</span>
+        </div>
+        <p class="desc">Nutty brown butter batter, bursting blueberries, crisp golden edges.</p>
+        <a href="recipe.html?id=2" class="view-link">View Recipe →</a>
+      </article>
+
+      <article class="recipe-card index-card" data-category="lunch" data-recipe-id="3">
+        <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=500&q=80" alt="Fresh grain bowl">
+        <button class="fav-btn" id="fav-btn-3" aria-label="Save recipe">♡</button>
+        <h4>Roasted Veggie Grain Bowl</h4>
+        <div class="badges">
+          <span class="badge">⏱ 35m</span>
+          <span class="badge">◆ Easy</span>
+        </div>
+        <p class="desc">Charred vegetables, herby yogurt sauce, chewy farro — a lunch that holds up.</p>
+        <a href="recipe.html?id=3" class="view-link">View Recipe →</a>
+      </article>
+
+      <article class="recipe-card index-card" data-category="dinner" data-recipe-id="4">
+        <img src="https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=500&q=80" alt="Braised short ribs">
+        <button class="fav-btn" id="fav-btn-4" aria-label="Save recipe">♡</button>
+        <h4>Red Wine Braised Short Ribs</h4>
+        <div class="badges">
+          <span class="badge">⏱ 3h</span>
+          <span class="badge">◆ Hard</span>
+        </div>
+        <p class="desc">Low and slow until the meat surrenders. Serve over something starchy.</p>
+        <a href="recipe.html?id=4" class="view-link">View Recipe →</a>
+      </article>
+
+      <article class="recipe-card index-card" data-category="dessert" data-recipe-id="5">
+        <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500&q=80" alt="Chocolate chip cookies">
+        <button class="fav-btn" id="fav-btn-5" aria-label="Save recipe">♡</button>
+        <h4>Salted Brown Butter Cookies</h4>
+        <div class="badges">
+          <span class="badge">⏱ 40m</span>
+          <span class="badge">◆ Easy</span>
+        </div>
+        <p class="desc">Crisp edges, gooey centers, a finishing crack of flaky salt.</p>
+        <a href="recipe.html?id=5" class="view-link">View Recipe →</a>
+      </article>
+
+      <article class="recipe-card index-card" data-category="vegan" data-recipe-id="6">
+        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80" alt="Vegan buddha bowl">
+        <button class="fav-btn" id="fav-btn-6" aria-label="Save recipe">♡</button>
+        <h4>Smoky Chickpea &amp; Sweet Potato Bowl</h4>
+        <div class="badges">
+          <span class="badge">⏱ 30m</span>
+          <span class="badge">◆ Easy</span>
+        </div>
+        <p class="desc">Crispy spiced chickpeas, roasted sweet potato, tahini drizzle.</p>
+        <a href="recipe.html?id=6" class="view-link">View Recipe →</a>
+      </article>
+
+      <article class="recipe-card index-card" data-category="dinner" data-recipe-id="7">
+        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&q=80" alt="Pan seared salmon">
+        <button class="fav-btn" id="fav-btn-7" aria-label="Save recipe">♡</button>
+        <h4>Crispy-Skin Salmon &amp; Lemon Butter</h4>
+        <div class="badges">
+          <span class="badge">⏱ 20m</span>
+          <span class="badge">◆ Medium</span>
+        </div>
+        <p class="desc">Restaurant-crisp skin at home, no special equipment required.</p>
+        <a href="recipe.html?id=7" class="view-link">View Recipe →</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== Newsletter ===== -->
+<section class="newsletter" id="about">
+  <div class="wrap">
+    <h2>One good recipe, every Sunday</h2>
+    <p>No spam, no fluff — just what's worth cooking this week.</p>
+    <form id="newsletter-form">
+      <input type="email" id="newsletter-email" placeholder="you@email.com" required>
+      <button type="submit" class="btn btn-primary">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer id="contact">
+  <div class="wrap">
+    <span class="copyright">© 2026 TastyBites. All recipes tested twice.</span>
+    <div class="social-links">
+      <a href="#" aria-label="Instagram">Instagram</a>
+      <a href="#" aria-label="Pinterest">Pinterest</a>
+      <a href="#" aria-label="YouTube">YouTube</a>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

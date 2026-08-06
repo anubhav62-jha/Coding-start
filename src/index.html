@@ -2,256 +2,77 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculator</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>City Hospital</title>
 <style>
-  :root {
-    --bg: #1b1c22;
-    --panel: #24262e;
-    --display-text: #f4f4f2;
-    --muted: #8a8d98;
-    --key-bg: #2f313b;
-    --key-hover: #3a3d49;
-    --op-bg: #ff8a3d;
-    --op-hover: #ff9c5c;
-    --equals-bg: #4f8cff;
-    --equals-hover: #6a9dff;
-    --danger: #ff5d5d;
-  }
-
-  * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(circle at top, #26282f, #101116 70%);
-    font-family: 'Segoe UI', system-ui, sans-serif;
-  }
-
-  .calculator {
-    width: 340px;
-    background: var(--panel);
-    border-radius: 24px;
-    padding: 24px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.45);
-  }
-
-  .display {
-    background: transparent;
-    text-align: right;
-    padding: 20px 10px 10px;
-    margin-bottom: 20px;
-    min-height: 90px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-
-  .display .history {
-    color: var(--muted);
-    font-size: 16px;
-    min-height: 20px;
-    word-wrap: break-word;
-  }
-
-  .display .current {
-    color: var(--display-text);
-    font-size: 44px;
-    font-weight: 500;
-    word-wrap: break-word;
-    overflow-wrap: anywhere;
-  }
-
-  .keys {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-  }
-
-  button {
-    border: none;
-    border-radius: 16px;
-    padding: 18px 0;
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--display-text);
-    background: var(--key-bg);
-    cursor: pointer;
-    transition: background 0.15s ease, transform 0.05s ease;
-  }
-
-  button:hover { background: var(--key-hover); }
-  button:active { transform: scale(0.95); }
-
-  .btn-op {
-    background: var(--op-bg);
-    color: #1b1c22;
-    font-weight: 600;
-  }
-  .btn-op:hover { background: var(--op-hover); }
-
-  .btn-equals {
-    background: var(--equals-bg);
-    font-weight: 600;
-  }
-  .btn-equals:hover { background: var(--equals-hover); }
-
-  .btn-clear, .btn-back {
-    color: var(--danger);
-    font-weight: 600;
-  }
-
-  .span-two { grid-column: span 2; }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#eef3f8;color:#333;line-height:1.6}
+header,footer{background:#0b6efd;color:#fff;padding:20px;text-align:center}
+nav{margin-top:10px}
+nav a{color:#fff;text-decoration:none;margin:0 10px;font-weight:bold}
+nav a:hover{color:#ffd54f}
+main{max-width:1000px;margin:25px auto;background:#fff;padding:30px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+h2{color:#0b6efd;margin:20px 0 10px}
+img{display:block;max-width:100%;margin:20px auto;border-radius:8px}
+ul{margin-left:20px}
+table{width:100%;border-collapse:collapse;margin:20px 0}
+th,td{border:1px solid #ccc;padding:10px;text-align:center}
+th{background:#0b6efd;color:#fff}
+tr:nth-child(even){background:#f6f6f6}
+form{background:#f7fbff;padding:20px;border-radius:8px}
+input,select,textarea{width:100%;padding:10px;margin:8px 0 15px;border:1px solid #bbb;border-radius:5px}
+input[type=submit],input[type=reset]{width:auto;padding:10px 20px;color:#fff;border:none;cursor:pointer}
+input[type=submit]{background:#198754}
+input[type=reset]{background:#dc3545}
+hr{margin:25px 0}
 </style>
 </head>
 <body>
-
-<div class="calculator">
-  <div class="display">
-    <div class="history" id="history"></div>
-    <div class="current" id="current">0</div>
-  </div>
-
-  <div class="keys">
-    <button class="btn-clear" data-action="clear">AC</button>
-    <button class="btn-back" data-action="back">⌫</button>
-    <button class="btn-op" data-action="percent">%</button>
-    <button class="btn-op" data-op="/">÷</button>
-
-    <button data-num="7">7</button>
-    <button data-num="8">8</button>
-    <button data-num="9">9</button>
-    <button class="btn-op" data-op="*">×</button>
-
-    <button data-num="4">4</button>
-    <button data-num="5">5</button>
-    <button data-num="6">6</button>
-    <button class="btn-op" data-op="-">−</button>
-
-    <button data-num="1">1</button>
-    <button data-num="2">2</button>
-    <button data-num="3">3</button>
-    <button class="btn-op" data-op="+">+</button>
-
-    <button class="span-two" data-num="0">0</button>
-    <button data-num=".">.</button>
-    <button class="btn-equals" data-action="equals">=</button>
-  </div>
-</div>
-
-<script>
-  const currentEl = document.getElementById('current');
-  const historyEl = document.getElementById('history');
-
-  let current = '0';
-  let previous = null;
-  let operator = null;
-  let justEvaluated = false;
-
-  function updateDisplay() {
-    currentEl.textContent = current;
-    historyEl.textContent = previous !== null && operator
-      ? `${previous} ${operatorSymbol(operator)}`
-      : '';
-  }
-
-  function operatorSymbol(op) {
-    return { '+': '+', '-': '−', '*': '×', '/': '÷' }[op] || '';
-  }
-
-  function inputNumber(num) {
-    if (justEvaluated) {
-      current = num === '.' ? '0.' : num;
-      justEvaluated = false;
-      updateDisplay();
-      return;
-    }
-    if (num === '.' && current.includes('.')) return;
-    if (current === '0' && num !== '.') {
-      current = num;
-    } else {
-      current += num;
-    }
-    updateDisplay();
-  }
-
-  function chooseOperator(op) {
-    if (operator !== null && !justEvaluated) {
-      evaluate();
-    }
-    previous = current;
-    operator = op;
-    justEvaluated = false;
-    current = '0';
-    updateDisplay();
-  }
-
-  function evaluate() {
-    if (operator === null || previous === null) return;
-    const a = parseFloat(previous);
-    const b = parseFloat(current);
-    let result;
-    switch (operator) {
-      case '+': result = a + b; break;
-      case '-': result = a - b; break;
-      case '*': result = a * b; break;
-      case '/': result = b === 0 ? 'Error' : a / b; break;
-    }
-    current = (typeof result === 'number') ? trimNumber(result) : result;
-    previous = null;
-    operator = null;
-    justEvaluated = true;
-    updateDisplay();
-  }
-
-  function trimNumber(num) {
-    return parseFloat(num.toFixed(10)).toString();
-  }
-
-  function clearAll() {
-    current = '0';
-    previous = null;
-    operator = null;
-    justEvaluated = false;
-    updateDisplay();
-  }
-
-  function backspace() {
-    if (justEvaluated) return;
-    current = current.length > 1 ? current.slice(0, -1) : '0';
-    updateDisplay();
-  }
-
-  function percent() {
-    current = trimNumber(parseFloat(current) / 100);
-    updateDisplay();
-  }
-
-  document.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (btn.dataset.num !== undefined) inputNumber(btn.dataset.num);
-      else if (btn.dataset.op !== undefined) chooseOperator(btn.dataset.op);
-      else if (btn.dataset.action === 'clear') clearAll();
-      else if (btn.dataset.action === 'back') backspace();
-      else if (btn.dataset.action === 'percent') percent();
-      else if (btn.dataset.action === 'equals') evaluate();
-    });
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key >= '0' && e.key <= '9') inputNumber(e.key);
-    else if (e.key === '.') inputNumber('.');
-    else if (['+','-','*','/'].includes(e.key)) chooseOperator(e.key);
-    else if (e.key === 'Enter' || e.key === '=') evaluate();
-    else if (e.key === 'Backspace') backspace();
-    else if (e.key === 'Escape') clearAll();
-  });
-
-  updateDisplay();
-</script>
-
-</body>
-</html>
+<header>
+<h1>CITY HOSPITAL</h1>
+<h3>Caring for Your Health Every Day</h3><hr>
+<nav>
+<a href="#">Home</a> |
+<a href="#">About</a> |
+<a href="#">Doctors</a> |
+<a href="#">Services</a> |
+<a href="#">Appointment</a> |
+<a href="#">Contact</a>
+</nav>
+</header>
+<main>
+<h2>Welcome to City Hospital</h2>
+<p>City Hospital provides quality healthcare services with experienced doctors, advanced medical equipment, and 24×7 emergency support.</p>
+<img src="hospital.jpg" alt="City Hospital">
+<hr>
+<h2>Our Services</h2>
+<ul><li>General Checkup</li><li>Emergency Care</li><li>Cardiology</li><li>Orthopedics</li><li>Pediatrics</li><li>Laboratory</li><li>Pharmacy</li><li>Ambulance Service</li></ul>
+<hr>
+<h2>Our Doctors</h2>
+<table>
+<tr><th>Doctor</th><th>Department</th><th>Experience</th><th>Timing</th></tr>
+<tr><td>Dr. Raj Sharma</td><td>Cardiology</td><td>12 Years</td><td>9 AM - 5 PM</td></tr>
+<tr><td>Dr. Priya Gupta</td><td>Pediatrics</td><td>10 Years</td><td>10 AM - 6 PM</td></tr>
+<tr><td>Dr. Imran Khan</td><td>ENT</td><td>8 Years</td><td>9 AM - 4 PM</td></tr>
+</table>
+<hr>
+<h2>Book an Appointment</h2>
+<form action="#" method="post">
+<label>Full Name</label><input type="text" required>
+<label>Email</label><input type="email" required>
+<label>Phone Number</label><input type="tel" required>
+<label>Department</label>
+<select><option>Select Department</option><option>Cardiology</option><option>Orthopedics</option><option>Pediatrics</option><option>ENT</option></select>
+<label>Appointment Date</label><input type="date" required>
+<label>Symptoms</label><textarea rows="5"></textarea>
+<input type="submit" value="Book Appointment">
+<input type="reset" value="Reset">
+</form>
+<hr>
+<h2>Contact Information</h2>
+<p><strong>Address:</strong> ABC Road, Delhi</p>
+<p><strong>Phone:</strong> +91-9876543210</p>
+<p><strong>Email:</strong> info@cityhospital.com</p>
+</main>
+<footer><p>&copy; 2026 City Hospital. All Rights Reserved.</p></footer>
+</body></html>
