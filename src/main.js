@@ -61,7 +61,6 @@
 // // let url ="https://chatgpt.com/";
 // //   console.log(url.replace("chatgpt"," "));
 
-
 // // let str = "My name is anubhav";
 // // console.log(str.includes("My"));
 
@@ -78,7 +77,7 @@
 // //  const arr1 = [ 1, 2, 3, 4, 5, 6,];
 // //      let arr2 = arr1;
 // //     arr2[0]=100;
-    
+
 // //      console.log(arr2);
 
 //     //  let arr1 =[ 1,2,3, 4, 5, 6];
@@ -100,58 +99,22 @@
 
 // // console.log(arr1)
 
-
 // // let arr1 = [1, 2, 3, 4, 5, 6];
 // // let arr2 = arr1;
-// //  arr2.push(100);     
+// //  arr2.push(100);
 // //    console.log(arr2);
 // //       console.log(arr1);
-           
+
 //        let arr1 = [1, 2, 3, 4, 5];
-        
+
 //         let arr2 =[...arr1];
-         
+
 //           arr1.splice(2,0,'Awaneesh');
 
 //          console.log(arr1);
-        
 
+const a = 9;
+let b = 6;
+a = 20;
 
-//   const a = 9;
-//    let b = 6;
-//     a = 5
-    
-//     console.log(a, b);
-
-
-
-
-
-      
-         
-
-
-   
-
-
-
-
-
-
-
-            
-
-         
-
-
-
-
-
-
-
-
-
-
-        
-
-
+console.log(a, b);
