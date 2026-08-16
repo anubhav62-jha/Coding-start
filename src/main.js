@@ -116,4 +116,5 @@
 const a = 9;
 let b = 6;
 a = 20;
+
 console.log(a, b);
