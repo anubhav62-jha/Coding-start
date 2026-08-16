@@ -115,5 +115,5 @@
 
 const a = 9;
 let b = 6;
-a = 5;
+a = 6;
 console.log(a, b);
